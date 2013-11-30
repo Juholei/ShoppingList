@@ -32,7 +32,6 @@ public class Product implements Subject {
 		return name;
 	}
 
-	@Override
 	public void notifyObservers() {
 		for(Observer o : observers) {
 			o.update(this);
