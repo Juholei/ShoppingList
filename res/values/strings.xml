@@ -7,8 +7,8 @@
     <string name="show_lists">Completed shoppinglists</string>
     <string name="create_list">Create a list</string>
     <string name="recipes">Recipes</string>
-    
     <string name="add_to_list">Add</string>
     <string name="add_hint">Enter an item</string>
+    <string name="title_activity_create_shopping_list">Create a list</string>
 
 </resources>

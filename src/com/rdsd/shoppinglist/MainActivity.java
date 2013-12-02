@@ -1,7 +1,8 @@
 package com.rdsd.shoppinglist;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
@@ -20,9 +21,9 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-//	final Button button = (Button) findViewById(R.id.button1);
 	public void goToShoppingList(View view) {
-		setContentView(R.layout.createlist);
+		Intent intent = new Intent(this, CreateShoppingListActivity.class);
+		startActivity(intent);
 	}
 
 }
