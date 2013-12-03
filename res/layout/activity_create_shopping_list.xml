@@ -22,7 +22,7 @@
         <requestFocus android:layout_weight="1" />
 
         <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView1"
+            android:id="@+id/itemField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,7 +33,7 @@
         </AutoCompleteTextView>
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/addItemButton"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

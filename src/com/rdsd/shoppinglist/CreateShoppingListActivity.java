@@ -3,10 +3,21 @@ package com.rdsd.shoppinglist;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+
+import com.rdsd.shoppinglist.DataClasses.Product;
+import com.rdsd.shoppinglist.DataClasses.ShoppingList;
 
 public class CreateShoppingListActivity extends Activity {
+	
+	private final static String TAG = "CreateShoppingListActivity";
+	private ShoppingList list;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +26,25 @@ public class CreateShoppingListActivity extends Activity {
 		setContentView(R.layout.activity_create_shopping_list);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		list = new ShoppingList();
+		Button addButton = (Button) findViewById(R.id.addItemButton);
+		
+		addButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				AutoCompleteTextView itemTextView = (AutoCompleteTextView) findViewById(R.id.itemField);
+				String productName = itemTextView.getText().toString();
+				if(!productName.equals(null)) {
+					Product product = new Product();
+					product.setName(productName);
+					list.addToList(product, 1);
+					Log.v(TAG, product.getName());
+				}
+			}
+		});
+		
 	}
 
 	/**
