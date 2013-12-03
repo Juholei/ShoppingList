@@ -1,4 +1,4 @@
-package Interfaces;
+package com.rdsd.shoppinglist.Interfaces;
 
 import com.rdsd.shoppinglist.DataClasses.Product;
 import com.rdsd.shoppinglist.DataClasses.ShoppingList;

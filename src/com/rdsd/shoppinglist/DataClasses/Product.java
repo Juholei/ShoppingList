@@ -2,8 +2,9 @@ package com.rdsd.shoppinglist.DataClasses;
 
 import java.util.ArrayList;
 
-import Interfaces.Observer;
-import Interfaces.Subject;
+import com.rdsd.shoppinglist.Interfaces.Observer;
+import com.rdsd.shoppinglist.Interfaces.Subject;
+
 
 public class Product implements Subject {
 	private ArrayList<Observer> observers;
