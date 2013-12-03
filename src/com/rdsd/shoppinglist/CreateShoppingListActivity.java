@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.rdsd.shoppinglist.DataClasses.Product;
 import com.rdsd.shoppinglist.DataClasses.ShoppingList;
@@ -29,6 +30,7 @@ public class CreateShoppingListActivity extends Activity {
 		
 		list = new ShoppingList();
 		Button addButton = (Button) findViewById(R.id.addItemButton);
+		ListView productList = (ListView) findViewById(R.id.productList);
 		
 		addButton.setOnClickListener(new OnClickListener() {
 			
