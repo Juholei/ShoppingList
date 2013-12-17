@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+   <item android:state_pressed="true">
+       <shape>
+           <solid
+               android:color="@color/menu_button_base"/>
+           <stroke
+               android:width="2dip"
+               android:color="@color/menu_button_stroke"/>
+           <corners
+               android:radius="4dip"/>
+           <padding
+               android:left="10dip"
+               android:right="10dip"/>
+       </shape>
+   </item>
+   <item>
+       <shape>
+           <gradient 
+               android:startColor="@color/menu_button_gradS"
+               android:endColor="@color/menu_button_gradE"
+               android:angle="270"/>
+           <stroke
+               android:width="2dip"
+               android:color="@color/menu_button_stroke"/>
+           <corners
+               android:radius="4dip"/>
+           <padding
+               android:left="10dip"
+               android:right="10dip"/>
+       </shape>
+   </item>
+</selector>

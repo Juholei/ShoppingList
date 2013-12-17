@@ -28,7 +28,7 @@
         <item name="android:layout_marginRight">15dip</item>
         <item name="android:layout_centerHorizontal">true</item>
         
-        <item name="android:background">@color/menu_button_base</item>
+        <item name="android:background">@drawable/menubutton</item>
         <item name="android:shadowColor">@color/menu_shadow_color</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
