@@ -9,31 +9,20 @@ import android.util.Log;
 
 public class ShoppingList {
 	private static final String TAG = "ShoppingList";
-	private HashMap<Product, Integer> contents;
-	private ArrayList<Product> contentsForListView;
+	private ArrayList<Product> contents;
 
 	public ShoppingList() {
-		this.contents = new HashMap<Product, Integer>();
-		contentsForListView = new ArrayList<Product>();
+		contents = new ArrayList<Product>();
 	}
 
-	public void addToList(Product product, int amount) {
-		contents.put(product, amount);
-		updateContentsForListView();
+	public void addToList(Product product) {
+		contents.add(0, product);
 	}
 
 	/**
 	 * @return an ArrayList to be used with ArrayAdapter
 	 */
-	public ArrayList<Product> getContentsForListView() {
-	
-		return contentsForListView;
-	}
-	
-	private void updateContentsForListView() {
-		contentsForListView.clear();
-		for(Product p : contents.keySet()) {
-			contentsForListView.add(0, p);
-		}
+	public ArrayList<Product> getContents() {
+		return contents;
 	}
 }
