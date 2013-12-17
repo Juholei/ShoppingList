@@ -13,8 +13,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	private static final String TAG = "SQLiteHelper";
 	
-	private SQLiteDatabase db;
-
 	private static final String DATABASE_NAME = "shoppinglist_db.db";
 	private static final int DATABASE_VERSION = 1;
 
@@ -45,7 +43,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		db = getWritableDatabase();
 		Log.v(TAG, PRODUCT_CREATE);
 		Log.v(TAG, SHOPPINGLIST_CREATE);
 	}
@@ -80,6 +77,12 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	public Product getProductByName(String productName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void saveShoppingListToDatabase(ShoppingList list) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
