@@ -1,26 +1,39 @@
 package com.rdsd.shoppinglist.DataClasses;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class ShoppingList {
+import android.util.Log;
 
+public class ShoppingList {
+	private static final String TAG = "ShoppingList";
 	private HashMap<Product, Integer> contents;
+	private ArrayList<Product> contentsForListView;
 
 	public ShoppingList() {
 		this.contents = new HashMap<Product, Integer>();
+		contentsForListView = new ArrayList<Product>();
 	}
 
 	public void addToList(Product product, int amount) {
 		contents.put(product, amount);
+		updateContentsForListView();
 	}
 
 	/**
-	 * @return Returns an iterable Set of Entries in the ShoppingList
+	 * @return an ArrayList to be used with ArrayAdapter
 	 */
-	public Set<Entry<Product, Integer>> getContents() {
-
-		return contents.entrySet();
+	public ArrayList<Product> getContentsForListView() {
+	
+		return contentsForListView;
+	}
+	
+	private void updateContentsForListView() {
+		contentsForListView.clear();
+		for(Product p : contents.keySet()) {
+			contentsForListView.add(0, p);
+		}
 	}
 }

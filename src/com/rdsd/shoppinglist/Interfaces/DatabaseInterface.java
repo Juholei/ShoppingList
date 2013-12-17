@@ -8,6 +8,4 @@ public interface DatabaseInterface {
 	public void saveProductToDatabase(Product p);
 	public ShoppingList getShoppingListFromDatabase();
 	public Product getProductByName(String productName);
-	
-
 }

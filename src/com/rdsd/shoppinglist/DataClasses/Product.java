@@ -40,6 +40,12 @@ public class Product implements Subject {
 	}
 
 	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getName();
+	}
+
+	@Override
 	public void removeObserver(Observer o) {
 		observers.remove(o);
 	}
