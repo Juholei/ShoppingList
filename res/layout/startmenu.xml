@@ -1,18 +1,5 @@
-<!-- Preliminary start menu (Basic buttons) -->
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-    
-    <ImageView
-        android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
-    	android:src="@drawable/background_scalable"
-    	android:scaleType="fitXY"
-    	android:contentDescription="@string/bg_desc" />
-    
-	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:paddingBottom="@dimen/activity_vertical_margin"
@@ -20,25 +7,30 @@
 	    android:paddingRight="@dimen/activity_horizontal_margin"
 	    android:paddingTop="@dimen/activity_vertical_margin"
 	    tools:context=".MainActivity" >
-	    
-	    <Button
-	        android:id="@+id/button1"
-	        android:layout_alignParentTop="true"
-	        style="@style/main_menu"
-	        android:text="@string/create_list" 
-	        android:onClick="goToShoppingList"/>
-	
-	    <Button
-	        android:id="@+id/button2"
-	        android:layout_below="@+id/button1"
-	        style="@style/main_menu"
-	        android:text="@string/show_lists" />
-	
-	    <Button
-	        android:id="@+id/button3"
-			style="@style/main_menu"
-	        android:layout_below="@+id/button2"
-	        android:text="@string/recipes" />
-	
-	</RelativeLayout>
-</FrameLayout>
+	 
+    <View 
+        android:id="@+id/back"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/bg_global" />
+    
+    <Button
+        android:id="@+id/button1"
+        android:layout_alignParentTop="true"
+        style="@style/main_menu"
+        android:text="@string/create_list" 
+        android:onClick="goToShoppingList"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_below="@+id/button1"
+        style="@style/main_menu"
+        android:text="@string/show_lists" />
+
+    <Button
+        android:id="@+id/button3"
+		style="@style/main_menu"
+        android:layout_below="@+id/button2"
+        android:text="@string/recipes" />
+
+</RelativeLayout>
