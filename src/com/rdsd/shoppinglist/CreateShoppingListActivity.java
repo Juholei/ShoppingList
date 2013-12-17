@@ -34,7 +34,7 @@ public class CreateShoppingListActivity extends Activity {
 		ListView productList = (ListView) findViewById(R.id.productList);
 		final ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(
 				getApplicationContext(), R.layout.shoppinglist_item,
-				list.getContentsForListView());
+				list.getContents());
 		productList.setAdapter(adapter);
 		addButton.setOnClickListener(new OnClickListener() {
 
@@ -45,7 +45,7 @@ public class CreateShoppingListActivity extends Activity {
 				if (!productName.equals(null)) {
 					Product product = new Product();
 					product.setName(productName);
-					list.addToList(product, 1);
+					list.addToList(product);
 					Log.v(TAG, product.getName());
 					adapter.notifyDataSetChanged();
 				}
