@@ -38,10 +38,10 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String SHOPPINGLIST_CREATE = "create table "
 			+ TABLE_SHOPPINGLIST + "(" + SHOPPINGLIST_PRODUCT
 			+ " integer primary key" +
-//			", foreign key(" + SHOPPINGLIST_PRODUCT + ") references "
-//			+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")" +
-					", " + SHOPPINGLIST_AMOUNT
-			+ " integer, " + SHOPPINGLIST_STATE + " integer" + ");";
+			", " + SHOPPINGLIST_AMOUNT
+			+ " integer, " + SHOPPINGLIST_STATE + " integer" + ", foreign key(" + SHOPPINGLIST_PRODUCT + ") references "
+			+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")" +
+			 ");";
 
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
