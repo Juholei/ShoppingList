@@ -9,7 +9,7 @@
 	    tools:context=".MainActivity" >
 	 
     <View 
-        android:id="@+id/back"
+        android:id="@+id/menu_back"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/bg_global" />

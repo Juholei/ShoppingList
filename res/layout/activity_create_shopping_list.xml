@@ -10,6 +10,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CreateShoppingListActivity" >
+    
+    <View 
+    android:id="@+id/list_back"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_global" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -35,6 +41,10 @@
         <Button
             android:id="@+id/addItemButton"
             style="?android:attr/buttonStyleSmall"
+            android:background="@drawable/menubutton"
+            android:textColor="@color/menu_text_color"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
