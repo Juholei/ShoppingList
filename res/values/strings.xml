@@ -10,5 +10,6 @@
     <string name="add_to_list">Add</string>
     <string name="add_hint">Enter an item</string>
     <string name="title_activity_create_shopping_list">Create a list</string>
+    <string name="bg_desc">A beautiful background image, which has post-it notes and some blur. Cool!</string>
 
 </resources>
