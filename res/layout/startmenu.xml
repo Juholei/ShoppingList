@@ -11,30 +11,21 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        style="@style/main_menu"
         android:text="@string/create_list" 
         android:onClick="goToShoppingList"/>
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/button1"
-        android:layout_marginTop="40dp"
+        style="@style/main_menu"
         android:text="@string/show_lists" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+		style="@style/main_menu"
         android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
         android:text="@string/recipes" />
 
 </RelativeLayout>

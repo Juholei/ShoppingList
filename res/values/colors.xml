@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="menu_button_base">#6852FF</color>
+    <color name="menu_button_stroke">#130091</color>
+    <color name="menu_button_gradS">#2300FF</color>
+    <color name="menu_button_gradE">#005DFF</color>
+    <color name="menu_text_color">#FFFFFF</color>
+    <color name="menu_shadow_color">#1D1747</color>
+</resources>
