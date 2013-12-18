@@ -47,6 +47,7 @@ public class CreateShoppingListActivity extends Activity {
 					product.setName(productName);
 					list.addToList(product);
 					Log.v(TAG, product.getName());
+					itemTextView.setText("");
 					adapter.notifyDataSetChanged();
 				}
 			}
