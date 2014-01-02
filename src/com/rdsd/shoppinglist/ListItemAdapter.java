@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rdsd.shoppinglist.DataClasses.Product;
+import com.rdsd.shoppinglist.DataClasses.ShoppingList;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,11 +24,11 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 	private static final String TAG = "ListItemAdapter";
 	private Context context;
 	private int layoutResourceId;
-	private List<Product> shoppingList = null;
+	private ShoppingList shoppingList = null;
 
 	public ListItemAdapter(Context context, int resource,
-			List<Product> shoppingList) {
-		super(context, resource, shoppingList);
+			ShoppingList shoppingList) {
+		super(context, resource, shoppingList.getContents());
 		this.layoutResourceId = resource;
 		this.context = context;
 		this.shoppingList = shoppingList;
@@ -55,16 +56,21 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 			holder = (ListItemHolder) listItem.getTag();
 		}
 		
-		holder.title.setText(shoppingList.get(position).getName());
+		holder.title.setText(shoppingList.getContents().get(position).getName());
+		holder.product = shoppingList.getContents().get(position);
 		
 		//Setting the onClickListener for the button in the list item
 		Button checkButton = (Button) listItem.findViewById(R.id.checkButton);
 		checkButton.setOnClickListener( new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Log.v(TAG, "testi");
+				
+				ListItemHolder holder = (ListItemHolder) ((View) v.getParent()).getTag();
+				Log.v(TAG, shoppingList.removeProduct(holder.product) + "");
+				notifyDataSetChanged();
 			}
 		});
 		
@@ -73,5 +79,6 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 
 	static class ListItemHolder {
 		TextView title;
+		Product product;
 	}
 }

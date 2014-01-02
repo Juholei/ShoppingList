@@ -34,7 +34,7 @@ public class CreateShoppingListActivity extends Activity {
 		ListView productList = (ListView) findViewById(R.id.productList);
 		final ListItemAdapter adapter = new ListItemAdapter(
 				getApplicationContext(), R.layout.shoppinglist_item,
-				list.getContents());
+				list);
 		productList.setAdapter(adapter);
 		addButton.setOnClickListener(new OnClickListener() {
 

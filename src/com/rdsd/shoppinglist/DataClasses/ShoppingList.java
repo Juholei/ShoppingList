@@ -19,6 +19,9 @@ public class ShoppingList {
 		contents.add(0, product);
 	}
 
+	public boolean removeProduct(Product product) {
+		return contents.remove(product);
+	}
 	/**
 	 * @return an ArrayList to be used with ArrayAdapter
 	 */
