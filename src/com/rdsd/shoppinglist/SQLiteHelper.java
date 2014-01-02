@@ -1,6 +1,12 @@
 package com.rdsd.shoppinglist;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -22,11 +28,15 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String PRODUCT_DESC = "product_description";
 	private static final String PRODUCT_SIZE = "product_size";
 	// Product classes added later
+	private String[] testcolumns = { PRODUCT_ID,
+		      PRODUCT_NAME };
 
 	private static final String TABLE_SHOPPINGLIST = "shoppinglist";
 	private static final String SHOPPINGLIST_PRODUCT = "product";
 	private static final String SHOPPINGLIST_AMOUNT = "amount";
 	private static final String SHOPPINGLIST_STATE = "state";
+	
+	private SQLiteDatabase database;
 
 	private static final String PRODUCT_CREATE = "create table "
 			+ TABLE_PRODUCT + "(" + PRODUCT_ID
@@ -60,12 +70,43 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		// TODO Auto-generated method stub
 
 	}
+	
+//	public void open() throws SQLException {
+//		database = sqlitehelper.getWritableDatabase();
+//	}
 
 	@Override
 	public void saveProductToDatabase(Product p) {
-		// TODO Auto-generated method stub
-
+		database = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(PRODUCT_NAME, p.getName());
+		Log.v(TAG, values.getAsString(PRODUCT_NAME));
+		database.insert(TABLE_PRODUCT, null, values);
+		
+		//Testi
+//		List<Product> products = new ArrayList<Product>();
+//		
+//		Cursor cursor = database.query(TABLE_PRODUCT, testcolumns, null, null, null, null, null);
+//		cursor.moveToFirst();
+//	    while (!cursor.isAfterLast()) {
+//	      Product product = cursorToProduct(cursor);
+//	      products.add(product);
+//	      Log.v(TAG, product.getName());
+//	      Log.v(TAG, Integer.toString(product.getId()));
+//	      cursor.moveToNext();
+//	    }
+	    
+	    
+		database.close();
 	}
+
+	//TESTI
+//	private Product cursorToProduct(Cursor cursor) {
+//		Product product = new Product();
+//	    product.setId(cursor.getInt(0));
+//	    product.setName(cursor.getString(1));
+//	    return product;
+//}
 
 	@Override
 	public ShoppingList getShoppingListFromDatabase() {

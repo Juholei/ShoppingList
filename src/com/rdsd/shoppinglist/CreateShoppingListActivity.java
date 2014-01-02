@@ -1,6 +1,9 @@
 package com.rdsd.shoppinglist;
 
+import java.net.InterfaceAddress;
+
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -36,6 +39,9 @@ public class CreateShoppingListActivity extends Activity {
 				getApplicationContext(), R.layout.shoppinglist_item,
 				list);
 		productList.setAdapter(adapter);
+		//Instantiate sqlitehelper
+		final SQLiteHelper db = new SQLiteHelper(getApplicationContext());
+		
 		addButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -46,6 +52,8 @@ public class CreateShoppingListActivity extends Activity {
 					Product product = new Product();
 					product.setName(productName);
 					list.addToList(product);
+					//Add product to database
+					db.saveProductToDatabase(product);
 					Log.v(TAG, product.getName());
 					itemTextView.setText("");
 					adapter.notifyDataSetChanged();
