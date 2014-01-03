@@ -1,11 +1,6 @@
 package com.rdsd.shoppinglist.DataClasses;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import android.util.Log;
 
 public class ShoppingList {
 	private static final String TAG = "ShoppingList";

@@ -52,14 +52,18 @@ public class Product implements Subject {
 
 	public void setDescription(String description) {
 		this.description = description;
+		notifyObservers();
 	}
 
 	public void setId(int id) {
 		this.id = id;
+		notifyObservers();
 	}
 
 	public void setName(String name) {
 		this.name = name;
+		notifyObservers();
+
 	}
 
 }

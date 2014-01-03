@@ -18,7 +18,7 @@ import com.rdsd.shoppinglist.Interfaces.DatabaseInterface;
 public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface {
 
 	private static final String TAG = "SQLiteHelper";
-	
+
 	private static final String DATABASE_NAME = "shoppinglist_db.db";
 	private static final int DATABASE_VERSION = 1;
 
@@ -28,14 +28,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String PRODUCT_DESC = "product_description";
 	private static final String PRODUCT_SIZE = "product_size";
 	// Product classes added later
-	private String[] testcolumns = { PRODUCT_ID,
-		      PRODUCT_NAME };
+	private String[] testcolumns = { PRODUCT_ID, PRODUCT_NAME };
 
 	private static final String TABLE_SHOPPINGLIST = "shoppinglist";
 	private static final String SHOPPINGLIST_PRODUCT = "product";
 	private static final String SHOPPINGLIST_AMOUNT = "amount";
 	private static final String SHOPPINGLIST_STATE = "state";
-	
+
 	private SQLiteDatabase database;
 
 	private static final String PRODUCT_CREATE = "create table "
@@ -45,11 +44,10 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	private static final String SHOPPINGLIST_CREATE = "create table "
 			+ TABLE_SHOPPINGLIST + "(" + SHOPPINGLIST_PRODUCT
-			+ " integer primary key" +
-			", " + SHOPPINGLIST_AMOUNT
-			+ " integer, " + SHOPPINGLIST_STATE + " integer" + ", foreign key(" + SHOPPINGLIST_PRODUCT + ") references "
-			+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")" +
-			 ");";
+			+ " integer primary key" + ", " + SHOPPINGLIST_AMOUNT
+			+ " integer, " + SHOPPINGLIST_STATE + " integer" + ", foreign key("
+			+ SHOPPINGLIST_PRODUCT + ") references " + TABLE_PRODUCT + "("
+			+ PRODUCT_ID + ")" + ");";
 
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -70,10 +68,10 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		// TODO Auto-generated method stub
 
 	}
-	
-//	public void open() throws SQLException {
-//		database = sqlitehelper.getWritableDatabase();
-//	}
+
+	// public void open() throws SQLException {
+	// database = sqlitehelper.getWritableDatabase();
+	// }
 
 	@Override
 	public void saveProductToDatabase(Product p) {
@@ -81,32 +79,43 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		ContentValues values = new ContentValues();
 		values.put(PRODUCT_NAME, p.getName());
 		Log.v(TAG, values.getAsString(PRODUCT_NAME));
-		database.insert(TABLE_PRODUCT, null, values);
-		
-		//Testi
-//		List<Product> products = new ArrayList<Product>();
-//		
-//		Cursor cursor = database.query(TABLE_PRODUCT, testcolumns, null, null, null, null, null);
-//		cursor.moveToFirst();
-//	    while (!cursor.isAfterLast()) {
-//	      Product product = cursorToProduct(cursor);
-//	      products.add(product);
-//	      Log.v(TAG, product.getName());
-//	      Log.v(TAG, Integer.toString(product.getId()));
-//	      cursor.moveToNext();
-//	    }
-	    
-	    
+		long insertId = database.insertWithOnConflict(TABLE_PRODUCT, null,
+				values, SQLiteDatabase.CONFLICT_REPLACE);
+
+		if (insertId == -1) {
+			Log.v(TAG,
+					"Saving Product to database failed. Product: "
+							+ p.getName());
+		}
+		else {
+			Log.v(TAG,
+					"Saved Product to database. Insert ID: " + insertId + " Product: "
+							+ p.getName());
+		}
+		// Testi
+		// List<Product> products = new ArrayList<Product>();
+		//
+		// Cursor cursor = database.query(TABLE_PRODUCT, testcolumns, null,
+		// null, null, null, null);
+		// cursor.moveToFirst();
+		// while (!cursor.isAfterLast()) {
+		// Product product = cursorToProduct(cursor);
+		// products.add(product);
+		// Log.v(TAG, product.getName());
+		// Log.v(TAG, Integer.toString(product.getId()));
+		// cursor.moveToNext();
+		// }
+
 		database.close();
 	}
 
-	//TESTI
-//	private Product cursorToProduct(Cursor cursor) {
-//		Product product = new Product();
-//	    product.setId(cursor.getInt(0));
-//	    product.setName(cursor.getString(1));
-//	    return product;
-//}
+	// TESTI
+	// private Product cursorToProduct(Cursor cursor) {
+	// Product product = new Product();
+	// product.setId(cursor.getInt(0));
+	// product.setName(cursor.getString(1));
+	// return product;
+	// }
 
 	@Override
 	public ShoppingList getShoppingListFromDatabase() {
@@ -123,7 +132,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	@Override
 	public void saveShoppingListToDatabase(ShoppingList list) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

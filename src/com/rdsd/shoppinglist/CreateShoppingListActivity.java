@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 import com.rdsd.shoppinglist.DataClasses.Product;
 import com.rdsd.shoppinglist.DataClasses.ShoppingList;
+import com.rdsd.shoppinglist.Interfaces.Observer;
 
 public class CreateShoppingListActivity extends Activity {
 
@@ -40,7 +41,9 @@ public class CreateShoppingListActivity extends Activity {
 				list);
 		productList.setAdapter(adapter);
 		//Instantiate sqlitehelper
-		final SQLiteHelper db = new SQLiteHelper(getApplicationContext());
+		SQLiteHelper db = new SQLiteHelper(getApplicationContext());
+		final ProductObserver o = new ProductObserver(db);
+		
 		
 		addButton.setOnClickListener(new OnClickListener() {
 
@@ -50,11 +53,10 @@ public class CreateShoppingListActivity extends Activity {
 				String productName = itemTextView.getText().toString();
 				if (!productName.equals(null)) {
 					Product product = new Product();
+					product.addObserver(o);
 					product.setName(productName);
 					list.addToList(product);
-					//Add product to database
-					db.saveProductToDatabase(product);
-					Log.v(TAG, product.getName());
+//					Log.v(TAG, product.getName());
 					itemTextView.setText("");
 					adapter.notifyDataSetChanged();
 				}
