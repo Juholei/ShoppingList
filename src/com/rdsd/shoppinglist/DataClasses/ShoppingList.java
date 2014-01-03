@@ -2,12 +2,34 @@ package com.rdsd.shoppinglist.DataClasses;
 
 import java.util.ArrayList;
 
-public class ShoppingList {
+import com.rdsd.shoppinglist.Interfaces.Observer;
+import com.rdsd.shoppinglist.Interfaces.Subject;
+
+public class ShoppingList implements Subject {
+	
 	private static final String TAG = "ShoppingList";
 	private ArrayList<Product> contents;
+	private ArrayList<Observer> observers;
 
 	public ShoppingList() {
+		this.observers = new ArrayList<Observer>();
 		contents = new ArrayList<Product>();
+	}
+	
+	@Override
+	public void addObserver(Observer o) {
+		observers.add(o);
+	}
+	
+	public void notifyObservers() {
+		for(Observer o : observers) {
+			o.update(this);
+		}
+	}
+	
+	@Override
+	public void removeObserver(Observer o) {
+		observers.remove(o);
 	}
 
 	public void addToList(Product product) {
@@ -23,4 +45,6 @@ public class ShoppingList {
 	public ArrayList<Product> getContents() {
 		return contents;
 	}
+	
+	
 }
