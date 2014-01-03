@@ -1,12 +1,7 @@
 package com.rdsd.shoppinglist;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -28,7 +23,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String PRODUCT_DESC = "product_description";
 	private static final String PRODUCT_SIZE = "product_size";
 	// Product classes added later
-	private String[] testcolumns = { PRODUCT_ID, PRODUCT_NAME };
+//	private String[] testcolumns = { PRODUCT_ID, PRODUCT_NAME };
 
 	private static final String TABLE_SHOPPINGLIST = "shoppinglist";
 	private static final String SHOPPINGLIST_PRODUCT = "product";
@@ -51,8 +46,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		Log.v(TAG, PRODUCT_CREATE);
-		Log.v(TAG, SHOPPINGLIST_CREATE);
 	}
 
 	@Override
