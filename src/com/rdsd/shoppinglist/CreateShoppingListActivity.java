@@ -1,24 +1,18 @@
 package com.rdsd.shoppinglist;
 
-import java.net.InterfaceAddress;
-
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.rdsd.shoppinglist.DataClasses.Product;
 import com.rdsd.shoppinglist.DataClasses.ShoppingList;
-import com.rdsd.shoppinglist.Interfaces.Observer;
 
 public class CreateShoppingListActivity extends Activity {
 

@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -30,6 +30,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rdsd.shoppinglist.MainActivity" />
         </activity>
+               <activity
+            android:name="com.rdsd.shoppinglist.BoughtProductsActivity"
+            android:label="@string/title_activity_bought_products_list"
+            android:parentActivityName="com.rdsd.shoppinglist.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rdsd.shoppinglist.MainActivity" />
+        </activity>
+ 
     </application>
 
 </manifest>

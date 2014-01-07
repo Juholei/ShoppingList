@@ -25,5 +25,10 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, CreateShoppingListActivity.class);
 		startActivity(intent);
 	}
+	
+	public void goToBoughtProductsList(View view) {
+		Intent intent = new Intent(this, BoughtProductsActivity.class);
+		startActivity(intent);
+	}
 
 }
