@@ -2,6 +2,7 @@ package com.rdsd.shoppinglist;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -102,13 +103,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		database.close();
 	}
 
-	// TESTI
-	// private Product cursorToProduct(Cursor cursor) {
-	// Product product = new Product();
-	// product.setId(cursor.getInt(0));
-	// product.setName(cursor.getString(1));
-	// return product;
-	// }
+	// Need to add the other information later
+	 private Product cursorToProduct(Cursor cursor) {
+	 Product product = new Product();
+	 product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCT_ID)));
+	 product.setName(cursor.getString(cursor.getColumnIndex(PRODUCT_NAME)));
+	 return product;
+	 }
 
 	@Override
 	public ShoppingList getShoppingListFromDatabase() {
@@ -118,8 +119,19 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	@Override
 	public Product getProductByName(String productName) {
-		// TODO Auto-generated method stub
-		return null;
+		database = getReadableDatabase();
+		
+		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null, PRODUCT_NAME + " like " + productName, null, null, null, null); 
+		Product p;
+		if(cursor.moveToFirst()) {
+			p = cursorToProduct(cursor);
+		}
+		else {
+			p = null;
+		}
+		database.close();
+		
+		return p;
 	}
 
 	@Override
