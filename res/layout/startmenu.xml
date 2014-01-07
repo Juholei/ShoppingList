@@ -25,7 +25,8 @@
         android:id="@+id/button2"
         android:layout_below="@+id/button1"
         style="@style/main_menu"
-        android:text="@string/show_lists" />
+        android:text="@string/show_lists"
+        android:onClick="goToBoughtProductsList" />
 
     <Button
         android:id="@+id/button3"
