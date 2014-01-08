@@ -37,6 +37,8 @@ public class CreateShoppingListActivity extends Activity {
 		//Instantiate sqlitehelper
 		SQLiteHelper db = new SQLiteHelper(getApplicationContext());
 		final ProductObserver o = new ProductObserver(db);
+		final ShoppingListObserver ob = new ShoppingListObserver(db);
+		list.addObserver(ob);
 		
 		
 		addButton.setOnClickListener(new OnClickListener() {
@@ -45,7 +47,7 @@ public class CreateShoppingListActivity extends Activity {
 			public void onClick(View v) {
 				AutoCompleteTextView itemTextView = (AutoCompleteTextView) findViewById(R.id.itemField);
 				String productName = itemTextView.getText().toString();
-				if (!productName.equals(null)) {
+				if (!productName.equals(null) && !productName.equals("")) {
 					Product product = new Product();
 					product.addObserver(o);
 					product.setName(productName);
@@ -53,6 +55,7 @@ public class CreateShoppingListActivity extends Activity {
 //					Log.v(TAG, product.getName());
 					itemTextView.setText("");
 					adapter.notifyDataSetChanged();
+					
 				}
 			}
 		});

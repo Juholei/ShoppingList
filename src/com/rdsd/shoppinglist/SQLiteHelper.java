@@ -1,5 +1,8 @@
 package com.rdsd.shoppinglist;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -24,7 +27,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String PRODUCT_DESC = "product_description";
 	private static final String PRODUCT_SIZE = "product_size";
 	// Product classes added later
-//	private String[] testcolumns = { PRODUCT_ID, PRODUCT_NAME };
+	// private String[] testcolumns = { PRODUCT_ID, PRODUCT_NAME };
 
 	private static final String TABLE_SHOPPINGLIST = "shoppinglist";
 	private static final String SHOPPINGLIST_PRODUCT = "product";
@@ -80,11 +83,9 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 			Log.v(TAG,
 					"Saving Product to database failed. Product: "
 							+ p.getName());
-		}
-		else {
-			Log.v(TAG,
-					"Saved Product to database. Insert ID: " + insertId + " Product: "
-							+ p.getName());
+		} else {
+			Log.v(TAG, "Saved Product to database. Insert ID: " + insertId
+					+ " Product: " + p.getName());
 		}
 		// Testi
 		// List<Product> products = new ArrayList<Product>();
@@ -104,12 +105,12 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	}
 
 	// Need to add the other information later
-	 private Product cursorToProduct(Cursor cursor) {
-	 Product product = new Product();
-	 product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCT_ID)));
-	 product.setName(cursor.getString(cursor.getColumnIndex(PRODUCT_NAME)));
-	 return product;
-	 }
+	private Product cursorToProduct(Cursor cursor) {
+		Product product = new Product();
+		product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCT_ID)));
+		product.setName(cursor.getString(cursor.getColumnIndex(PRODUCT_NAME)));
+		return product;
+	}
 
 	@Override
 	public ShoppingList getShoppingListFromDatabase() {
@@ -119,25 +120,49 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	@Override
 	public Product getProductByName(String productName) {
-		database = getReadableDatabase();
-		
-		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null, PRODUCT_NAME + " like " + productName, null, null, null, null); 
+		database = this.getReadableDatabase();
+
+		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null,
+				PRODUCT_NAME + " like " + productName, null, null, null, null);
 		Product p;
-		if(cursor.moveToFirst()) {
+		if (cursor.moveToFirst()) {
 			p = cursorToProduct(cursor);
-		}
-		else {
+		} else {
 			p = null;
 		}
 		database.close();
-		
+
 		return p;
 	}
 
 	@Override
 	public void saveShoppingListToDatabase(ShoppingList list) {
-		// TODO Auto-generated method stub
 
+		database = this.getWritableDatabase();
+
+		ArrayList<Product> datalist = new ArrayList<Product>(list.getContents());
+		Iterator<Product> iter = datalist.iterator();
+		while (iter.hasNext()) {
+			Product prod = iter.next();
+			createRow(prod);
+		}
+		database.close();
 	}
 
+	public void createRow(Product p) {
+		ContentValues values = new ContentValues();
+		values.put(SHOPPINGLIST_PRODUCT, p.getId());
+		Log.v(TAG, values.getAsString(SHOPPINGLIST_PRODUCT));
+		long insertId = database.insertWithOnConflict(TABLE_SHOPPINGLIST, null,
+				values, SQLiteDatabase.CONFLICT_REPLACE);
+
+		if (insertId == -1) {
+			Log.v(TAG,
+					"Saving Product to database failed. Product: "
+							+ p.getName());
+		} else {
+			Log.v(TAG, "Saved Product to database. Insert ID: " + insertId
+					+ " Product: " + p.getName());
+		}
+	}
 }

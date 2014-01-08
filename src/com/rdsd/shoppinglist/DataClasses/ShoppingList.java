@@ -34,6 +34,7 @@ public class ShoppingList implements Subject {
 
 	public void addToList(Product product) {
 		contents.add(0, product);
+		notifyObservers();
 	}
 
 	public boolean removeProduct(Product product) {

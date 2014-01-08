@@ -18,7 +18,7 @@
         android:id="@+id/button1"
         android:layout_alignParentTop="true"
         style="@style/main_menu"
-        android:text="@string/create_list" 
+        android:text="@string/shoppinglist" 
         android:onClick="goToShoppingList"/>
 
     <Button
