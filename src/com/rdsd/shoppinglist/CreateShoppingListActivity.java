@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -29,9 +30,14 @@ public class CreateShoppingListActivity extends Activity {
 
 		// Instantiate sqlitehelper
 		SQLiteHelper db = new SQLiteHelper(getApplicationContext());
-
 		list = db.getShoppingListFromDatabase();
-		Button addButton = (Button) findViewById(R.id.addItemButton);
+
+		ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(
+				this, android.R.layout.simple_dropdown_item_1line,
+				db.getProductNames());
+		AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.itemField);
+		textView.setAdapter(autoCompleteAdapter);
+
 		ListView productList = (ListView) findViewById(R.id.productList);
 		final ListItemAdapter adapter = new ListItemAdapter(
 				getApplicationContext(), R.layout.shoppinglist_item, list);
@@ -42,6 +48,7 @@ public class CreateShoppingListActivity extends Activity {
 		list.addObserver(slo);
 		list.addObserversToExistingProducts(po);
 
+		Button addButton = (Button) findViewById(R.id.addItemButton);
 		addButton.setOnClickListener(new OnClickListener() {
 
 			@Override

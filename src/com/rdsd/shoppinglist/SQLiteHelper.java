@@ -2,6 +2,7 @@ package com.rdsd.shoppinglist;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -209,5 +210,26 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 			Log.v(TAG, "Saved Product to shopping list database. Insert ID: "
 					+ insertId + " Product: " + p.getName());
 		}
+	}
+
+	public List<String> getProductNames() {
+		database = this.getReadableDatabase();
+		ArrayList<String> names = new ArrayList<String>();
+		String[] columns = { SQLiteHelper.PRODUCT_NAME };
+		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, columns,
+				null, null, null, null, SQLiteHelper.PRODUCT_NAME + " ASC");
+		
+		cursor.moveToFirst();
+		
+		while(!cursor.isAfterLast()){
+			String name = cursor.getString(cursor.getColumnIndex(PRODUCT_NAME));
+			names.add(name);
+			cursor.moveToNext();
+		}
+		
+		cursor.close();
+		database.close();
+
+		return names;
 	}
 }
