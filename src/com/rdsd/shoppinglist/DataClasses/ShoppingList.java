@@ -2,6 +2,8 @@ package com.rdsd.shoppinglist.DataClasses;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 import com.rdsd.shoppinglist.Interfaces.Observer;
 import com.rdsd.shoppinglist.Interfaces.Subject;
 
@@ -47,5 +49,11 @@ public class ShoppingList implements Subject {
 		return contents;
 	}
 	
+	public void addObserversToExistingProducts(Observer o) {
+		for (Product p : contents) {
+			p.addObserver(o);
+			Log.v(TAG, "Added ProductObserver for " + p.getName());
+		}
+	}
 	
 }

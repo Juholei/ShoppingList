@@ -27,20 +27,21 @@ public class CreateShoppingListActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 
-		list = new ShoppingList();
+		// Instantiate sqlitehelper
+		SQLiteHelper db = new SQLiteHelper(getApplicationContext());
+
+		list = db.getShoppingListFromDatabase();
 		Button addButton = (Button) findViewById(R.id.addItemButton);
 		ListView productList = (ListView) findViewById(R.id.productList);
 		final ListItemAdapter adapter = new ListItemAdapter(
-				getApplicationContext(), R.layout.shoppinglist_item,
-				list);
+				getApplicationContext(), R.layout.shoppinglist_item, list);
 		productList.setAdapter(adapter);
-		//Instantiate sqlitehelper
-		SQLiteHelper db = new SQLiteHelper(getApplicationContext());
-		final ProductObserver o = new ProductObserver(db);
-		final ShoppingListObserver ob = new ShoppingListObserver(db);
-		list.addObserver(ob);
-		
-		
+
+		final ProductObserver po = new ProductObserver(db);
+		final ShoppingListObserver slo = new ShoppingListObserver(db);
+		list.addObserver(slo);
+		list.addObserversToExistingProducts(po);
+
 		addButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -49,13 +50,13 @@ public class CreateShoppingListActivity extends Activity {
 				String productName = itemTextView.getText().toString();
 				if (!productName.equals(null) && !productName.equals("")) {
 					Product product = new Product();
-					product.addObserver(o);
+					product.addObserver(po);
 					product.setName(productName);
 					list.addToList(product);
-//					Log.v(TAG, product.getName());
+					// Log.v(TAG, product.getName());
 					itemTextView.setText("");
 					adapter.notifyDataSetChanged();
-					
+
 				}
 			}
 		});

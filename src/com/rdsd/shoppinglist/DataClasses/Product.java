@@ -5,20 +5,21 @@ import java.util.ArrayList;
 import com.rdsd.shoppinglist.Interfaces.Observer;
 import com.rdsd.shoppinglist.Interfaces.Subject;
 
-
 public class Product implements Subject {
 	private ArrayList<Observer> observers;
 	private int id;
 	private String name;
 	private String description;
-	
+
 	public Product() {
 		this.observers = new ArrayList<Observer>();
 	}
 
 	@Override
 	public void addObserver(Observer o) {
-		observers.add(o);
+		if (!observers.contains(o)) {
+			observers.add(o);
+		}
 	}
 
 	public String getDescription() {
@@ -34,7 +35,7 @@ public class Product implements Subject {
 	}
 
 	public void notifyObservers() {
-		for(Observer o : observers) {
+		for (Observer o : observers) {
 			o.update(this);
 		}
 	}
@@ -57,7 +58,7 @@ public class Product implements Subject {
 
 	public void setId(int id) {
 		this.id = id;
-//		notifyObservers();
+		// notifyObservers();
 	}
 
 	public void setName(String name) {

@@ -59,7 +59,6 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Log.v(TAG, "testi");
 				
 				ListItemHolder holder = (ListItemHolder) ((View) v.getParent()).getTag();

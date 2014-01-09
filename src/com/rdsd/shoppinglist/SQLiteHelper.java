@@ -70,8 +70,12 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	// database = sqlitehelper.getWritableDatabase();
 	// }
 
-	/* (non-Javadoc)
-	 * @see com.rdsd.shoppinglist.Interfaces.DatabaseInterface#saveProductToDatabase(com.rdsd.shoppinglist.DataClasses.Product)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.rdsd.shoppinglist.Interfaces.DatabaseInterface#saveProductToDatabase
+	 * (com.rdsd.shoppinglist.DataClasses.Product)
 	 */
 	@Override
 	public long saveProductToDatabase(Product p) {
@@ -105,7 +109,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		// }
 
 		database.close();
-		
+
 		return insertId;
 	}
 
@@ -114,13 +118,32 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		Product product = new Product();
 		product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCT_ID)));
 		product.setName(cursor.getString(cursor.getColumnIndex(PRODUCT_NAME)));
+
 		return product;
 	}
 
 	@Override
 	public ShoppingList getShoppingListFromDatabase() {
-		// TODO Auto-generated method stub
-		return null;
+		database = this.getReadableDatabase();
+		ShoppingList list = new ShoppingList();
+		Cursor cursor = database.query(SQLiteHelper.TABLE_SHOPPINGLIST, null,
+				null, null, null, null, SQLiteHelper.SHOPPINGLIST_PRODUCT
+						+ " DESC");
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			int id = cursor.getInt(cursor.getColumnIndex(SHOPPINGLIST_PRODUCT));
+			Product p = getProductById(id);
+
+			if (p != null) {
+				list.addToList(p);
+			}
+			cursor.moveToNext();
+		}
+		cursor.close();
+		database.close();
+
+		return list;
 	}
 
 	@Override
@@ -129,6 +152,23 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null,
 				PRODUCT_NAME + " like " + productName, null, null, null, null);
+		Product p;
+		if (cursor.moveToFirst()) {
+			p = cursorToProduct(cursor);
+		} else {
+			p = null;
+		}
+		cursor.close();
+		database.close();
+
+		return p;
+	}
+
+	private Product getProductById(int id) {
+		database = this.getReadableDatabase();
+
+		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null,
+				PRODUCT_ID + " like " + id, null, null, null, null);
 		Product p;
 		if (cursor.moveToFirst()) {
 			p = cursorToProduct(cursor);
@@ -157,7 +197,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	public void createRow(Product p) {
 		ContentValues values = new ContentValues();
 		values.put(SHOPPINGLIST_PRODUCT, p.getId());
-//		Log.v(TAG, values.getAsString(SHOPPINGLIST_PRODUCT));
+		// Log.v(TAG, values.getAsString(SHOPPINGLIST_PRODUCT));
 		long insertId = database.insertWithOnConflict(TABLE_SHOPPINGLIST, null,
 				values, SQLiteDatabase.CONFLICT_REPLACE);
 
@@ -166,8 +206,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 					"Saving Product to shopping list database failed. Product: "
 							+ p.getName());
 		} else {
-			Log.v(TAG, "Saved Product to shopping list database. Insert ID: " + insertId
-					+ " Product: " + p.getName());
+			Log.v(TAG, "Saved Product to shopping list database. Insert ID: "
+					+ insertId + " Product: " + p.getName());
 		}
 	}
 }
