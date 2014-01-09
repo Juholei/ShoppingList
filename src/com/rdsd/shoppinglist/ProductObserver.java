@@ -23,7 +23,10 @@ public class ProductObserver implements Observer {
 	public void update(Subject o) {
 		Log.v(TAG, "Update called");
 		Product p = (Product) o;
-		dbHelper.saveProductToDatabase(p);
+		long insertId = dbHelper.saveProductToDatabase(p);
+		
+		Log.v(TAG, "Product id of the object: " + p.getId() + ", database insertId: " + insertId);
+		p.setId((int) insertId);
 	}
 
 }

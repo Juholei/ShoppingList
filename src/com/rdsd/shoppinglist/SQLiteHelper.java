@@ -70,8 +70,11 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	// database = sqlitehelper.getWritableDatabase();
 	// }
 
+	/* (non-Javadoc)
+	 * @see com.rdsd.shoppinglist.Interfaces.DatabaseInterface#saveProductToDatabase(com.rdsd.shoppinglist.DataClasses.Product)
+	 */
 	@Override
-	public void saveProductToDatabase(Product p) {
+	public long saveProductToDatabase(Product p) {
 		database = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(PRODUCT_NAME, p.getName());
@@ -102,6 +105,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		// }
 
 		database.close();
+		
+		return insertId;
 	}
 
 	// Need to add the other information later
@@ -152,16 +157,16 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	public void createRow(Product p) {
 		ContentValues values = new ContentValues();
 		values.put(SHOPPINGLIST_PRODUCT, p.getId());
-		Log.v(TAG, values.getAsString(SHOPPINGLIST_PRODUCT));
+//		Log.v(TAG, values.getAsString(SHOPPINGLIST_PRODUCT));
 		long insertId = database.insertWithOnConflict(TABLE_SHOPPINGLIST, null,
 				values, SQLiteDatabase.CONFLICT_REPLACE);
 
 		if (insertId == -1) {
 			Log.v(TAG,
-					"Saving Product to database failed. Product: "
+					"Saving Product to shopping list database failed. Product: "
 							+ p.getName());
 		} else {
-			Log.v(TAG, "Saved Product to database. Insert ID: " + insertId
+			Log.v(TAG, "Saved Product to shopping list database. Insert ID: " + insertId
 					+ " Product: " + p.getName());
 		}
 	}

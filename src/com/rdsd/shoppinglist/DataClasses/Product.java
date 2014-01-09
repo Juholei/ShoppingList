@@ -57,7 +57,7 @@ public class Product implements Subject {
 
 	public void setId(int id) {
 		this.id = id;
-		notifyObservers();
+//		notifyObservers();
 	}
 
 	public void setName(String name) {
