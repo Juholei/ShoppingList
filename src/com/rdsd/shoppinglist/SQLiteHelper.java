@@ -35,6 +35,11 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String SHOPPINGLIST_AMOUNT = "amount";
 	private static final String SHOPPINGLIST_STATE = "state";
 
+	private static final String TABLE_BOUGHTPRODUCTS = "boughtproducts";
+	private static final String BOUGHTPRODUCTS_PRODUCT = "product";
+	private static final String BOUGHTPRODUCTS_LOCATION = "location";
+	private static final String BOUGHTPRODUCTS_TIMESTAMP = "timestamp";
+
 	private SQLiteDatabase database;
 
 	private static final String PRODUCT_CREATE = "create table "
@@ -49,6 +54,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 			+ SHOPPINGLIST_PRODUCT + ") references " + TABLE_PRODUCT + "("
 			+ PRODUCT_ID + ")" + ");";
 
+	private static final String BOUGHTPRODUCTS_CREATE = "create table "
+			+ TABLE_BOUGHTPRODUCTS + "(" + BOUGHTPRODUCTS_PRODUCT
+			+ " integer primary key" + ", " + BOUGHTPRODUCTS_LOCATION
+			+ " text, " + BOUGHTPRODUCTS_TIMESTAMP + " text, " + "foreign key("
+			+ BOUGHTPRODUCTS_PRODUCT + ") references " + TABLE_PRODUCT + "("
+			+ PRODUCT_ID + ")" + ");";
+
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -58,13 +70,16 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 		database.execSQL(PRODUCT_CREATE);
 		database.execSQL(SHOPPINGLIST_CREATE);
+		database.execSQL(BOUGHTPRODUCTS_CREATE);
 		Log.v(TAG, "databases created");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-
+		if(arg2 > arg1) {
+			database.execSQL(BOUGHTPRODUCTS_CREATE);
+		}
+		Log.v(TAG, "databases upgraded");
 	}
 
 	// public void open() throws SQLException {
@@ -218,15 +233,15 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		String[] columns = { SQLiteHelper.PRODUCT_NAME };
 		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, columns,
 				null, null, null, null, SQLiteHelper.PRODUCT_NAME + " ASC");
-		
+
 		cursor.moveToFirst();
-		
-		while(!cursor.isAfterLast()){
+
+		while (!cursor.isAfterLast()) {
 			String name = cursor.getString(cursor.getColumnIndex(PRODUCT_NAME));
 			names.add(name);
 			cursor.moveToNext();
 		}
-		
+
 		cursor.close();
 		database.close();
 
