@@ -76,7 +76,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		if(arg2 > arg1) {
+		if (arg2 > arg1) {
 			database.execSQL(BOUGHTPRODUCTS_CREATE);
 		}
 		Log.v(TAG, "databases upgraded");

@@ -12,5 +12,6 @@
     <string name="title_activity_create_shopping_list">Create a list</string>
     <string name="title_activity_bought_products_list">Bought products</string>
     <string name="bg_desc">A beautiful background image, consisting of blue colour</string>
+    <string name="title_activity_recipes">Recipes</string>
 
 </resources>

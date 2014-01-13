@@ -32,6 +32,7 @@
         android:id="@+id/button3"
 		style="@style/main_menu"
         android:layout_below="@+id/button2"
-        android:text="@string/recipes" />
+        android:text="@string/recipes"
+        android:onClick="goToRecipes" />
 
 </RelativeLayout>

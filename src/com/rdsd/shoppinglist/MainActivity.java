@@ -30,5 +30,10 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, BoughtProductsActivity.class);
 		startActivity(intent);
 	}
+	
+	public void goToRecipes(View view) {
+		Intent intent = new Intent(this, RecipesActivity.class);
+		startActivity(intent);
+	}
 
 }
