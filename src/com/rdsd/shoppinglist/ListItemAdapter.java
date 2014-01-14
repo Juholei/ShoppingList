@@ -1,6 +1,7 @@
 package com.rdsd.shoppinglist;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.location.LocationClient;
 import com.rdsd.shoppinglist.DataClasses.Product;
 import com.rdsd.shoppinglist.DataClasses.ShoppingList;
 
@@ -19,13 +21,15 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 	private Context context;
 	private int layoutResourceId;
 	private ShoppingList shoppingList = null;
+	private LocationClient lc;
 
 	public ListItemAdapter(Context context, int resource,
-			ShoppingList shoppingList) {
+			ShoppingList shoppingList, LocationClient lc) {
 		super(context, resource, shoppingList.getContents());
 		this.layoutResourceId = resource;
 		this.context = context;
 		this.shoppingList = shoppingList;
+		this.lc = lc;
 	}
 
 	@Override
@@ -62,7 +66,8 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 				Log.v(TAG, "testi");
 				
 				ListItemHolder holder = (ListItemHolder) ((View) v.getParent()).getTag();
-				Log.v(TAG, shoppingList.removeProduct(holder.product) + "");
+				Location currentLoc = lc.getLastLocation();
+				Log.v(TAG, shoppingList.removeProduct(holder.product) + " product bought at location : Latitude " + currentLoc.getLatitude() + " longitude " + currentLoc.getLongitude());
 				notifyDataSetChanged();
 			}
 		});
