@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 import android.util.Log;
 
 import com.rdsd.shoppinglist.DataClasses.Product;
@@ -20,7 +21,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String TAG = "SQLiteHelper";
 
 	private static final String DATABASE_NAME = "shoppinglist_db.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	private static final String TABLE_PRODUCT = "product";
 	private static final String PRODUCT_ID = "product_id";
@@ -58,7 +59,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	private static final String BOUGHTPRODUCTS_CREATE = "create table "
 			+ TABLE_BOUGHTPRODUCTS + "(" + BOUGHTPRODUCTS_ID
-			+ " integer primary key, " + BOUGHTPRODUCTS_PRODUCT
+			+ " integer primary key autoincrement, " + BOUGHTPRODUCTS_PRODUCT
 			+ " integer not null" + ", " + BOUGHTPRODUCTS_LOC_LAT + " text, "
 			+ BOUGHTPRODUCTS_LOC_LON + " text, " + BOUGHTPRODUCTS_TIMESTAMP
 			+ " text, " + "foreign key(" + BOUGHTPRODUCTS_PRODUCT
@@ -79,9 +80,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(TAG, "Upgrading database from version "
-				+ oldVersion + " to " + newVersion
-				+ ", which will destroy all old data");
+		Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+				+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOUGHTPRODUCTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPINGLIST);
@@ -252,5 +252,35 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		database.close();
 
 		return names;
+	}
+
+	public void moveFromShoppingListToBoughtProducts(Product p, Location loc) {
+		database = getWritableDatabase();
+
+		database.delete(TABLE_SHOPPINGLIST,
+				SHOPPINGLIST_PRODUCT + " = " + p.getId(), null);
+
+		ContentValues values = new ContentValues();
+		values.put(BOUGHTPRODUCTS_PRODUCT, p.getId());
+		values.put(BOUGHTPRODUCTS_LOC_LAT, Double.toString(loc.getLatitude()));
+		values.put(BOUGHTPRODUCTS_LOC_LON, Double.toString(loc.getLongitude()));
+
+		Long time = System.currentTimeMillis() / 1000;
+		String timestamp = time.toString();
+
+		values.put(BOUGHTPRODUCTS_TIMESTAMP, timestamp);
+
+		long insertID = database.insert(TABLE_BOUGHTPRODUCTS, null, values);
+
+		if (insertID != -1) {
+			Log.v(TAG, "Bought product succesfully saved to "
+					+ TABLE_BOUGHTPRODUCTS);
+		}
+		else {
+			Log.v(TAG, "Saving bought product to "
+					+ TABLE_BOUGHTPRODUCTS + " failed");
+		}
+
+		database.close();
 	}
 }

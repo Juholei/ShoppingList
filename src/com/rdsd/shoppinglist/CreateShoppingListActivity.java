@@ -51,7 +51,7 @@ public class CreateShoppingListActivity extends Activity implements
 
 		ListView productList = (ListView) findViewById(R.id.productList);
 		final ListItemAdapter adapter = new ListItemAdapter(
-				getApplicationContext(), R.layout.shoppinglist_item, list, lc);
+				getApplicationContext(), R.layout.shoppinglist_item, list, lc, db);
 		productList.setAdapter(adapter);
 
 		final ProductObserver po = new ProductObserver(db);

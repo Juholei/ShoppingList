@@ -22,14 +22,16 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 	private int layoutResourceId;
 	private ShoppingList shoppingList = null;
 	private LocationClient lc;
+	private SQLiteHelper db;
 
 	public ListItemAdapter(Context context, int resource,
-			ShoppingList shoppingList, LocationClient lc) {
+			ShoppingList shoppingList, LocationClient lc, SQLiteHelper db) {
 		super(context, resource, shoppingList.getContents());
 		this.layoutResourceId = resource;
 		this.context = context;
 		this.shoppingList = shoppingList;
 		this.lc = lc;
+		this.db = db;
 	}
 
 	@Override
@@ -67,7 +69,10 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 				
 				ListItemHolder holder = (ListItemHolder) ((View) v.getParent()).getTag();
 				Location currentLoc = lc.getLastLocation();
-				Log.v(TAG, shoppingList.removeProduct(holder.product) + " product bought at location : Latitude " + currentLoc.getLatitude() + " longitude " + currentLoc.getLongitude());
+				Product p = holder.product;
+				shoppingList.removeProduct(p);
+				Log.v(TAG, "product bought at location : Latitude " + currentLoc.getLatitude() + " longitude " + currentLoc.getLongitude());
+				db.moveFromShoppingListToBoughtProducts(p, currentLoc);
 				notifyDataSetChanged();
 			}
 		});
