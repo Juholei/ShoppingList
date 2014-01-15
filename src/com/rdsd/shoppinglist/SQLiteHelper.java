@@ -20,7 +20,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String TAG = "SQLiteHelper";
 
 	private static final String DATABASE_NAME = "shoppinglist_db.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	private static final String TABLE_PRODUCT = "product";
 	private static final String PRODUCT_ID = "product_id";
@@ -36,8 +36,10 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	private static final String SHOPPINGLIST_STATE = "state";
 
 	private static final String TABLE_BOUGHTPRODUCTS = "boughtproducts";
+	private static final String BOUGHTPRODUCTS_ID = "purchase_id";
 	private static final String BOUGHTPRODUCTS_PRODUCT = "product";
-	private static final String BOUGHTPRODUCTS_LOCATION = "location";
+	private static final String BOUGHTPRODUCTS_LOC_LAT = "latitude";
+	private static final String BOUGHTPRODUCTS_LOC_LON = "longitude";
 	private static final String BOUGHTPRODUCTS_TIMESTAMP = "timestamp";
 
 	private SQLiteDatabase database;
@@ -55,11 +57,12 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 			+ PRODUCT_ID + ")" + ");";
 
 	private static final String BOUGHTPRODUCTS_CREATE = "create table "
-			+ TABLE_BOUGHTPRODUCTS + "(" + BOUGHTPRODUCTS_PRODUCT
-			+ " integer primary key" + ", " + BOUGHTPRODUCTS_LOCATION
-			+ " text, " + BOUGHTPRODUCTS_TIMESTAMP + " text, " + "foreign key("
-			+ BOUGHTPRODUCTS_PRODUCT + ") references " + TABLE_PRODUCT + "("
-			+ PRODUCT_ID + ")" + ");";
+			+ TABLE_BOUGHTPRODUCTS + "(" + BOUGHTPRODUCTS_ID
+			+ " integer primary key, " + BOUGHTPRODUCTS_PRODUCT
+			+ " integer not null" + ", " + BOUGHTPRODUCTS_LOC_LAT + " text, "
+			+ BOUGHTPRODUCTS_LOC_LON + " text, " + BOUGHTPRODUCTS_TIMESTAMP
+			+ " text, " + "foreign key(" + BOUGHTPRODUCTS_PRODUCT
+			+ ") references " + TABLE_PRODUCT + "(" + PRODUCT_ID + ")" + ");";
 
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -75,11 +78,14 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		if (arg2 > arg1) {
-			database.execSQL(BOUGHTPRODUCTS_CREATE);
-		}
-		Log.v(TAG, "databases upgraded");
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.w(TAG, "Upgrading database from version "
+				+ oldVersion + " to " + newVersion
+				+ ", which will destroy all old data");
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOUGHTPRODUCTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPINGLIST);
+		onCreate(db);
 	}
 
 	// public void open() throws SQLException {
