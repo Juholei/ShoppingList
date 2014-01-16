@@ -40,7 +40,7 @@ public class CreateShoppingListActivity extends Activity implements
 		setupActionBar();
 
 		// Instantiate sqlitehelper
-		SQLiteHelper db = new SQLiteHelper(getApplicationContext());
+		final SQLiteHelper db = new SQLiteHelper(getApplicationContext());
 		list = db.getShoppingListFromDatabase();
 
 		ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(
@@ -51,7 +51,8 @@ public class CreateShoppingListActivity extends Activity implements
 
 		ListView productList = (ListView) findViewById(R.id.productList);
 		final ListItemAdapter adapter = new ListItemAdapter(
-				getApplicationContext(), R.layout.shoppinglist_item, list, lc, db);
+				getApplicationContext(), R.layout.shoppinglist_item, list, lc,
+				db);
 		productList.setAdapter(adapter);
 
 		final ProductObserver po = new ProductObserver(db);
@@ -67,9 +68,15 @@ public class CreateShoppingListActivity extends Activity implements
 				AutoCompleteTextView itemTextView = (AutoCompleteTextView) findViewById(R.id.itemField);
 				String productName = itemTextView.getText().toString();
 				if (!productName.equals(null) && !productName.equals("")) {
-					Product product = new Product();
-					product.addObserver(po);
-					product.setName(productName);
+					Product product = db.getProductByName(productName);
+
+					if (product != null) {
+						product.addObserver(po);
+					} else {
+						product = new Product();
+						product.addObserver(po);
+						product.setName(productName);
+					}
 					list.addToList(product);
 
 					itemTextView.setText("");

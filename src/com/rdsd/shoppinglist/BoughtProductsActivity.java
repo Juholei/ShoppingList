@@ -20,7 +20,7 @@ public class BoughtProductsActivity extends Activity {
 		ArrayList<String> list = db.getBoughtProducts();
 		
 		boughtProductsList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list));
-		
+		db.getLocationInfoForShoppingList();
 
 
 	}

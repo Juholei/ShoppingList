@@ -13,6 +13,7 @@ public class Product implements Subject {
 
 	public Product() {
 		this.observers = new ArrayList<Observer>();
+		id = -1;
 	}
 
 	@Override

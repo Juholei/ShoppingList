@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.util.Log;
 
+import com.rdsd.shoppinglist.DataClasses.LocationInfo;
 import com.rdsd.shoppinglist.DataClasses.Product;
 import com.rdsd.shoppinglist.DataClasses.ShoppingList;
 import com.rdsd.shoppinglist.Interfaces.DatabaseInterface;
@@ -104,6 +105,11 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		database = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(PRODUCT_NAME, p.getName());
+		
+		if (p.getId() != -1) {
+			values.put(PRODUCT_ID, p.getId());
+		}
+		
 		Log.v(TAG, values.getAsString(PRODUCT_NAME));
 		long insertId = database.insertWithOnConflict(TABLE_PRODUCT, null,
 				values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -173,12 +179,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		database = this.getReadableDatabase();
 
 		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null,
-				PRODUCT_NAME + " like " + productName, null, null, null, null);
+				PRODUCT_NAME + " = \"" + productName + "\"", null, null, null, null);
 		Product p;
 		if (cursor.moveToFirst()) {
 			p = cursorToProduct(cursor);
 		} else {
 			p = null;
+			Log.v(TAG, "Returning null product");
 		}
 		cursor.close();
 		database.close();
@@ -216,7 +223,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		database.close();
 	}
 
-	public void createRow(Product p) {
+	private void createRow(Product p) {
 		ContentValues values = new ContentValues();
 		values.put(SHOPPINGLIST_PRODUCT, p.getId());
 		// Log.v(TAG, values.getAsString(SHOPPINGLIST_PRODUCT));
@@ -288,10 +295,10 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 		ArrayList<String> productNames = new ArrayList<String>();
 
-		Cursor cursor = database.rawQuery("SELECT + " + PRODUCT_NAME
-				+ " FROM  " + TABLE_PRODUCT + " AS P JOIN "
-				+ TABLE_BOUGHTPRODUCTS + " AS BP ON P." + PRODUCT_ID + "=BP."
-				+ BOUGHTPRODUCTS_PRODUCT, null);
+		Cursor cursor = database.rawQuery(
+				"SELECT " + PRODUCT_NAME + " FROM  " + TABLE_PRODUCT
+						+ " AS P JOIN " + TABLE_BOUGHTPRODUCTS + " AS BP ON P."
+						+ PRODUCT_ID + "=BP." + BOUGHTPRODUCTS_PRODUCT, null);
 
 		cursor.moveToFirst();
 
@@ -306,5 +313,38 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 		return productNames;
 
+	}
+
+	public ArrayList<LocationInfo> getLocationInfoForShoppingList() {
+		database = getReadableDatabase();
+
+		ArrayList<LocationInfo> productLocations = new ArrayList<LocationInfo>();
+
+		Cursor cursor = database.rawQuery("SELECT " + "BP."
+				+ BOUGHTPRODUCTS_PRODUCT + ", " + "BP."
+				+ BOUGHTPRODUCTS_LOC_LAT + ", " + "BP."
+				+ BOUGHTPRODUCTS_LOC_LON + " FROM " + TABLE_BOUGHTPRODUCTS
+				+ " AS BP JOIN "+ TABLE_PRODUCT + " AS P ON P." + PRODUCT_ID + "=BP." + BOUGHTPRODUCTS_PRODUCT
+				+ " JOIN " + TABLE_SHOPPINGLIST + " ON BP."
+				+ BOUGHTPRODUCTS_PRODUCT + " = " + TABLE_SHOPPINGLIST + "."
+				+ SHOPPINGLIST_PRODUCT, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			int productId = cursor.getInt(0);
+			String latitude = cursor.getString(1);
+			String longitude = cursor.getString(2);
+
+			Log.v(TAG, productId + " " + latitude + " " + " " + longitude);
+			 LocationInfo locInfo = new LocationInfo(productId, latitude,
+			 longitude);
+			 productLocations.add(locInfo);
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		database.close();
+
+		return productLocations;
 	}
 }
