@@ -105,11 +105,11 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		database = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(PRODUCT_NAME, p.getName());
-		
+
 		if (p.getId() != -1) {
 			values.put(PRODUCT_ID, p.getId());
 		}
-		
+
 		Log.v(TAG, values.getAsString(PRODUCT_NAME));
 		long insertId = database.insertWithOnConflict(TABLE_PRODUCT, null,
 				values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -179,7 +179,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		database = this.getReadableDatabase();
 
 		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null,
-				PRODUCT_NAME + " = \"" + productName + "\"", null, null, null, null);
+				PRODUCT_NAME + " = \"" + productName + "\"", null, null, null,
+				null);
 		Product p;
 		if (cursor.moveToFirst()) {
 			p = cursorToProduct(cursor);
@@ -320,14 +321,16 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 
 		ArrayList<LocationInfo> productLocations = new ArrayList<LocationInfo>();
 
-		Cursor cursor = database.rawQuery("SELECT " + "BP."
-				+ BOUGHTPRODUCTS_PRODUCT + ", " + "BP."
-				+ BOUGHTPRODUCTS_LOC_LAT + ", " + "BP."
-				+ BOUGHTPRODUCTS_LOC_LON + " FROM " + TABLE_BOUGHTPRODUCTS
-				+ " AS BP JOIN "+ TABLE_PRODUCT + " AS P ON P." + PRODUCT_ID + "=BP." + BOUGHTPRODUCTS_PRODUCT
-				+ " JOIN " + TABLE_SHOPPINGLIST + " ON BP."
-				+ BOUGHTPRODUCTS_PRODUCT + " = " + TABLE_SHOPPINGLIST + "."
-				+ SHOPPINGLIST_PRODUCT, null);
+		Cursor cursor = database
+				.rawQuery("SELECT " + "BP." + BOUGHTPRODUCTS_PRODUCT + ", "
+						+ "BP." + BOUGHTPRODUCTS_LOC_LAT + ", " + "BP."
+						+ BOUGHTPRODUCTS_LOC_LON + " FROM "
+						+ TABLE_BOUGHTPRODUCTS + " AS BP JOIN " + TABLE_PRODUCT
+						+ " AS P ON P." + PRODUCT_ID + "=BP."
+						+ BOUGHTPRODUCTS_PRODUCT + " JOIN "
+						+ TABLE_SHOPPINGLIST + " ON BP."
+						+ BOUGHTPRODUCTS_PRODUCT + " = " + TABLE_SHOPPINGLIST
+						+ "." + SHOPPINGLIST_PRODUCT, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -336,9 +339,9 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 			String longitude = cursor.getString(2);
 
 			Log.v(TAG, productId + " " + latitude + " " + " " + longitude);
-			 LocationInfo locInfo = new LocationInfo(productId, latitude,
-			 longitude);
-			 productLocations.add(locInfo);
+			LocationInfo locInfo = new LocationInfo(productId, latitude,
+					longitude);
+			productLocations.add(locInfo);
 			cursor.moveToNext();
 		}
 
