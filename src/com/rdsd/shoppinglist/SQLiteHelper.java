@@ -299,7 +299,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		Cursor cursor = database.rawQuery(
 				"SELECT " + PRODUCT_NAME + " FROM  " + TABLE_PRODUCT
 						+ " AS P JOIN " + TABLE_BOUGHTPRODUCTS + " AS BP ON P."
-						+ PRODUCT_ID + "=BP." + BOUGHTPRODUCTS_PRODUCT, null);
+						+ PRODUCT_ID + "=BP." + BOUGHTPRODUCTS_PRODUCT + " ORDER BY BP." + BOUGHTPRODUCTS_TIMESTAMP + " DESC", null);
 
 		cursor.moveToFirst();
 
