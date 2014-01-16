@@ -275,12 +275,36 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		if (insertID != -1) {
 			Log.v(TAG, "Bought product succesfully saved to "
 					+ TABLE_BOUGHTPRODUCTS);
-		}
-		else {
-			Log.v(TAG, "Saving bought product to "
-					+ TABLE_BOUGHTPRODUCTS + " failed");
+		} else {
+			Log.v(TAG, "Saving bought product to " + TABLE_BOUGHTPRODUCTS
+					+ " failed");
 		}
 
 		database.close();
+	}
+
+	public ArrayList<String> getBoughtProducts() {
+		database = getReadableDatabase();
+
+		ArrayList<String> productNames = new ArrayList<String>();
+
+		Cursor cursor = database.rawQuery("SELECT + " + PRODUCT_NAME
+				+ " FROM  " + TABLE_PRODUCT + " AS P JOIN "
+				+ TABLE_BOUGHTPRODUCTS + " AS BP ON P." + PRODUCT_ID + "=BP."
+				+ BOUGHTPRODUCTS_PRODUCT, null);
+
+		cursor.moveToFirst();
+
+		while (!cursor.isAfterLast()) {
+			String name = cursor.getString(0);
+			productNames.add(name);
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		database.close();
+
+		return productNames;
+
 	}
 }

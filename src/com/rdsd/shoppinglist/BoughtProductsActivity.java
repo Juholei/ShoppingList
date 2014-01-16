@@ -14,14 +14,15 @@ public class BoughtProductsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_bought_products);
+		SQLiteHelper db = new SQLiteHelper(this);
 		
 		ListView boughtProductsList = (ListView) findViewById(R.id.boughtProductsList);
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("kakkaa");
-		list.add("ripulia");
-		list.add("paskaa");
+		ArrayList<String> list = db.getBoughtProducts();
 		
 		boughtProductsList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list));
+		
+
+
 	}
 
 }
