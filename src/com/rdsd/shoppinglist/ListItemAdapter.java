@@ -41,7 +41,7 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 
 		View listItem = convertView;
 		ListItemHolder holder = null;
-		
+
 		if (listItem == null) {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,28 +55,38 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 		} else {
 			holder = (ListItemHolder) listItem.getTag();
 		}
-		
-		holder.title.setText(shoppingList.getContents().get(position).getName());
+
+		holder.title
+				.setText(shoppingList.getContents().get(position).getName());
 		holder.product = shoppingList.getContents().get(position);
-		
-		//Setting the onClickListener for the button in the list item
+
+		// Setting the onClickListener for the button in the list item
 		Button checkButton = (Button) listItem.findViewById(R.id.checkButton);
-		checkButton.setOnClickListener( new OnClickListener() {
-			
+		checkButton.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Log.v(TAG, "testi");
-				
-				ListItemHolder holder = (ListItemHolder) ((View) v.getParent()).getTag();
+
+				ListItemHolder holder = (ListItemHolder) ((View) v.getParent())
+						.getTag();
 				Location currentLoc = lc.getLastLocation();
+				if (currentLoc == null) {
+					currentLoc = new Location(TAG);
+					currentLoc.setLatitude(0);
+					currentLoc.setLongitude(0);
+				}
 				Product p = holder.product;
 				shoppingList.removeProduct(p);
-				Log.v(TAG, "product bought at location : Latitude " + currentLoc.getLatitude() + " longitude " + currentLoc.getLongitude());
+				Log.v(TAG,
+						"product bought at location : Latitude "
+								+ currentLoc.getLatitude() + " longitude "
+								+ currentLoc.getLongitude());
 				db.moveFromShoppingListToBoughtProducts(p, currentLoc);
 				notifyDataSetChanged();
 			}
 		});
-		
+
 		return listItem;
 	}
 
