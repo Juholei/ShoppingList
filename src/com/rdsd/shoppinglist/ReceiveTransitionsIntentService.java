@@ -1,7 +1,6 @@
 package com.rdsd.shoppinglist;
 
 import java.util.List;
-import java.util.Timer;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -12,6 +11,7 @@ import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
+import com.rdsd.shoppinglist.DataClasses.Product;
 
 public class ReceiveTransitionsIntentService extends IntentService {
 	private static final String TAG = "ReceiveTransitionsIntentService";
@@ -35,16 +35,17 @@ public class ReceiveTransitionsIntentService extends IntentService {
 						.getTriggeringGeofences(intent);
 
 				String[] triggerIds = new String[triggered.size()];
-
+				SQLiteHelper db = new SQLiteHelper(this);
 				for (int i = 0; i < triggerIds.length; i++) {
 					triggerIds[i] = triggered.get(i).getRequestId();
 					Log.v(TAG, "Geofence triggered! ID " + triggerIds[i]);
+					Product p = db.getProductById(Integer.parseInt(triggerIds[i]));
 					Notification n = new Notification.Builder(this)
 							.setContentTitle(
-									"Geofence triggered, go buy something!")
+									"Go buy " + p.getName() + " , you can buy it nearby!")
 							.setContentText(
-									"Go buy this product: " + triggerIds[i])
-							.setTicker("Geofence triggered, go buy something!")
+									"Go buy this product: " + p.getName())
+							.setTicker("Go buy " + p.getName() + " , you can buy it nearby!")
 							.setSmallIcon(R.drawable.ic_launcher)
 							.setWhen(System.currentTimeMillis())
 							.setDefaults(
@@ -52,6 +53,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
 											| Notification.DEFAULT_VIBRATE)
 							.build();
 					n.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
+					
 
 					NotificationManager nm = (NotificationManager) this
 							.getSystemService(Context.NOTIFICATION_SERVICE);

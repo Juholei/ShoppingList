@@ -194,7 +194,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements DatabaseInterface 
 		return p;
 	}
 
-	private Product getProductById(int id) {
+	public Product getProductById(int id) {
 		database = this.getReadableDatabase();
 
 		Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCT, null,

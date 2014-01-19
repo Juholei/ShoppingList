@@ -8,31 +8,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.rdsd.shoppinglist.DataClasses.Product;
-import com.rdsd.shoppinglist.DataClasses.ShoppingList;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.StrictMode;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.support.v4.app.NavUtils;
+
+import com.rdsd.shoppinglist.DataClasses.Product;
+import com.rdsd.shoppinglist.DataClasses.ShoppingList;
 
 public class RecipesActivity extends Activity {
 
