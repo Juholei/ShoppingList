@@ -8,6 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.rdsd.shoppinglist.DataClasses.Product;
+import com.rdsd.shoppinglist.DataClasses.ShoppingList;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -23,6 +26,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
@@ -75,56 +81,86 @@ public class RecipesActivity extends Activity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RecipesActivity.this);
-				List<String> templist = new ArrayList<String>();
-				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						RecipesActivity.this);
+				final List<String> templist;
+
 				Log.v(TAG, Integer.toString(position));
 				Log.v(TAG, Long.toString(id));
-				
+
 				if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
 					Log.v(TAG, "long press detected on group");
-					
+
 					templist = listDataChild.get(listDataHeader.get(position));
-					
+
 					alertDialogBuilder.setTitle("Recipe");
-					
+
 					StringBuilder sb = new StringBuilder();
-					
+
 					sb.append(listDataHeader.get(position));
 					sb.append("\n\n");
-					
-					for(int k = 0; k <= templist.size() - 1; k++) {
+
+					for (int k = 0; k <= templist.size() - 1; k++) {
 						sb.append(templist.get(k));
 						sb.append("\n");
 					}
 					alertDialogBuilder.setMessage(sb.toString());
-					
-					OnClickListener listener = new OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							
-						}
-					};
-					alertDialogBuilder.setPositiveButton("Add to shopping list", listener);
-					alertDialogBuilder.setNegativeButton("Cancel", listener);
+
+					alertDialogBuilder.setPositiveButton(
+							"Add to shopping list", new OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									SQLiteHelper db = new SQLiteHelper(
+											getApplicationContext());
+									ShoppingList list = db
+											.getShoppingListFromDatabase();
+
+									ProductObserver po = new ProductObserver(db);
+									ShoppingListObserver slo = new ShoppingListObserver(
+											db);
+									for (String s : templist) {
+										Product product = db
+												.getProductByName(s);
+
+										if (product != null) {
+											product.addObserver(po);
+										} else {
+											product = new Product();
+											product.addObserver(po);
+											product.setName(s);
+										}
+										list.addToList(product);
+									}
+									db.saveShoppingListToDatabase(list);
+								}
+							});
+					alertDialogBuilder.setNegativeButton("Cancel",
+							new OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.cancel();
+								}
+							});
 
 					// create alert dialog
 					AlertDialog alertDialog = alertDialogBuilder.create();
-	 
+
 					// show it
 					alertDialog.show();
-					
+
 				} else if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-//					Log.v(TAG, "long press detected on child");
-//					ExpandableListView.
-//					alertDialogBuilder.setTitle("Item");
-//					alertDialogBuilder.setMessage(R.layout.recipes_item).toString();
-					
+					// Log.v(TAG, "long press detected on child");
+					// ExpandableListView.
+					// alertDialogBuilder.setTitle("Item");
+					// alertDialogBuilder.setMessage(R.layout.recipes_item).toString();
+
 					return false;
 				}
-				
+
 				return true;
 			}
 		});
