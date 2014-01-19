@@ -173,7 +173,6 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		createGeofenceObjects();
 		addGeofences();
@@ -181,10 +180,8 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 
 	@Override
 	public void onDisconnected() {
-		// TODO Auto-generated method stub
 		requestInProgress = false;
 		locationClient = null;
-
 	}
 
 }
