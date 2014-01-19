@@ -13,5 +13,6 @@
     <string name="title_activity_bought_products_list">Bought products</string>
     <string name="bg_desc">A beautiful background image, consisting of blue colour</string>
     <string name="title_activity_recipes">Recipes</string>
+    <string name="hold_to_add">Hold to add recipe to your shopping list</string>
 
 </resources>

@@ -12,11 +12,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnLongClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.support.v4.app.NavUtils;
 
 public class RecipesActivity extends Activity {
@@ -51,7 +60,7 @@ public class RecipesActivity extends Activity {
 
 		// get the listview
 		expListView = (ExpandableListView) findViewById(R.id.expRecipes);
-		
+
 		new GetRecipes().execute();
 
 		// listAdapter = new ExpandableListAdapter(this, listDataHeader,
@@ -60,7 +69,65 @@ public class RecipesActivity extends Activity {
 		// // setting list adapter
 		expListView.setAdapter(listAdapter);
 
-		// get recipes in async
+		// setting long click listener to get recipes into shopping list
+		expListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RecipesActivity.this);
+				List<String> templist = new ArrayList<String>();
+				
+				Log.v(TAG, Integer.toString(position));
+				Log.v(TAG, Long.toString(id));
+				
+				if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+					Log.v(TAG, "long press detected on group");
+					
+					templist = listDataChild.get(listDataHeader.get(position));
+					
+					alertDialogBuilder.setTitle("Recipe");
+					
+					StringBuilder sb = new StringBuilder();
+					
+					sb.append(listDataHeader.get(position));
+					sb.append("\n\n");
+					
+					for(int k = 0; k <= templist.size() - 1; k++) {
+						sb.append(templist.get(k));
+						sb.append("\n");
+					}
+					alertDialogBuilder.setMessage(sb.toString());
+					
+					OnClickListener listener = new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							
+						}
+					};
+					alertDialogBuilder.setPositiveButton("Add to shopping list", listener);
+					alertDialogBuilder.setNegativeButton("Cancel", listener);
+
+					// create alert dialog
+					AlertDialog alertDialog = alertDialogBuilder.create();
+	 
+					// show it
+					alertDialog.show();
+					
+				} else if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+//					Log.v(TAG, "long press detected on child");
+//					ExpandableListView.
+//					alertDialogBuilder.setTitle("Item");
+//					alertDialogBuilder.setMessage(R.layout.recipes_item).toString();
+					
+					return false;
+				}
+				
+				return true;
+			}
+		});
 
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -104,9 +171,9 @@ public class RecipesActivity extends Activity {
 						String jsonStr2 = hh.makeServiceCall(url_items
 								+ recipenames.get(i).toString(),
 								HTTPhandler.GET);
-						
+
 						List<String> recipe = new ArrayList<String>();
-						
+
 						recipe.clear();
 
 						// Log.d(TAG, jsonStr2);
@@ -133,11 +200,11 @@ public class RecipesActivity extends Activity {
 									"Couldn't get any data from the url");
 						}
 
-						// adding contact to contact list
+						// adding recipe to recipe list
 						listDataHeader.add(recipenames.getString(i));
 						listDataChild.put(listDataHeader.get(i), recipe);
-//						Log.v(TAG, listDataHeader.get(i));
-//						Log.v(TAG, recipe.get(i));
+						// Log.v(TAG, listDataHeader.get(i));
+						// Log.v(TAG, recipe.get(i));
 
 					}
 				} catch (JSONException e) {
@@ -164,7 +231,7 @@ public class RecipesActivity extends Activity {
 			// R.layout.list_item, new String[] { TAG_NAME, TAG_EMAIL,
 			// TAG_PHONE_MOBILE }, new int[] { R.id.name,
 			// R.id.email, R.id.mobile });
-			
+
 			listAdapter = new ExpandableListAdapter(RecipesActivity.this,
 					listDataHeader, listDataChild);
 
