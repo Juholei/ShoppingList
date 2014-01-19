@@ -2,18 +2,17 @@ package com.rdsd.shoppinglist;
 
 import java.util.ArrayList;
 
-import com.rdsd.shoppinglist.DataClasses.Product;
-import com.rdsd.shoppinglist.DataClasses.ShoppingList;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.rdsd.shoppinglist.DataClasses.Product;
+import com.rdsd.shoppinglist.DataClasses.ShoppingList;
 
 public class BoughtProductsActivity extends Activity {
 
@@ -43,7 +42,6 @@ public class BoughtProductsActivity extends Activity {
 						ShoppingList list = db.getShoppingListFromDatabase();
 
 						ProductObserver po = new ProductObserver(db);
-						ShoppingListObserver slo = new ShoppingListObserver(db);
 						String productName = productsList.get(position);
 						Product product = db.getProductByName(productName);
 
@@ -58,7 +56,7 @@ public class BoughtProductsActivity extends Activity {
 
 						db.saveShoppingListToDatabase(list);
 						
-						Toast toast = Toast.makeText(getApplicationContext(), productName + " added to shopping list", 3);
+						Toast toast = Toast.makeText(getApplicationContext(), productName + " added to shopping list", Toast.LENGTH_SHORT);
 						toast.show();
 						return false;
 					}

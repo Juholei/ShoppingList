@@ -36,9 +36,6 @@ public class ListItemAdapter extends ArrayAdapter<Product> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		// return super.getView(position, convertView, parent);
-
 		View listItem = convertView;
 		ListItemHolder holder = null;
 

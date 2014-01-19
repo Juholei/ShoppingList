@@ -43,7 +43,6 @@ public class Product implements Subject {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return getName();
 	}
 
